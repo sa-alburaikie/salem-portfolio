@@ -4,6 +4,7 @@ FROM php:8.2-cli
 RUN apt-get update && apt-get install -y \
     git unzip curl zip \
     libzip-dev \
+    libpq-dev \
     && docker-php-ext-install zip pdo pdo_pgsql
 
 # Composer
@@ -24,11 +25,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 RUN npm install
 RUN npm run build
 
+# IMPORTANT: DO NOT generate key here
+
 # Permissions
 RUN chmod -R 775 storage bootstrap/cache
 
-# ⚠️ IMPORTANT: expose Render port
 EXPOSE 10000
 
-# 🚀 الأفضل: run migrate + start server safely
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=10000
+CMD php artisan serve --host=0.0.0.0 --port=10000
