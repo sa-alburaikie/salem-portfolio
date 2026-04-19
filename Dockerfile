@@ -24,11 +24,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 RUN npm install
 RUN npm run build
 
-# IMPORTANT: DO NOT generate key here
-
 # Permissions
 RUN chmod -R 775 storage bootstrap/cache
 
+# ⚠️ IMPORTANT: expose Render port
 EXPOSE 10000
 
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# 🚀 الأفضل: run migrate + start server safely
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=10000
